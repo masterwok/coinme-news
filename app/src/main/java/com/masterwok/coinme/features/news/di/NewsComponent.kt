@@ -8,7 +8,8 @@ import dagger.Subcomponent
 @Subcomponent(
     modules = [
         ViewModelFactoryModule::class,
-        NewsViewModelModule::class
+        NewsViewModelModule::class,
+        NewsDataModule::class
     ]
 )
 interface NewsComponent {
