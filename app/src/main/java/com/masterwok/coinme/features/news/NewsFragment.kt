@@ -60,8 +60,6 @@ class NewsFragment : Fragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
-
-        addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 
     private fun observeViewModel() = with(viewLifecycleOwner.lifecycleScope) {

@@ -10,3 +10,10 @@ private val iso8601Format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
  * string.
  */
 fun Date.toIso8601(): String = iso8601Format.format(this)
+
+/**
+ * convert this [Date] into an instance of a calendar
+ */
+internal fun Date.toCalendar() = Calendar.getInstance().apply {
+    time = this@toCalendar
+}
