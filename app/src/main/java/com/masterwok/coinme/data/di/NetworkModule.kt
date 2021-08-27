@@ -5,6 +5,7 @@ import com.masterwok.coinme.data.clients.moshi.adapters.UriAdapterFactory
 import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.clients.okhttp.interceptors.InternetConnectionInterceptor
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -12,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import javax.inject.Singleton
 
 @Module
@@ -22,6 +24,7 @@ class NetworkModule {
     fun provideMoshi(): Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(UriAdapterFactory())
+        .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
         .build()
 
     @Singleton
