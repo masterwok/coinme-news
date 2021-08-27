@@ -39,6 +39,7 @@ class NewsPagingSource constructor(
                 nextKey = if (articles.isEmpty()) null else pageIndex + 1
             )
         } catch (exception: Exception) {
+            val x = 1
             return LoadResult.Error(exception)
         }
     }

@@ -1,6 +1,8 @@
 package com.masterwok.coinme.data.clients.news.dtos
 
 import android.net.Uri
+import com.masterwok.coinme.data.clients.news.constants.Status
+import com.squareup.moshi.Json
 import java.util.*
 
 data class SourceDto(
@@ -13,15 +15,15 @@ data class ArticleDto(
     val author: String?,
     val title: String,
     val description: String,
-    val url: Uri,
-    val urlToImage: Uri,
-    val publishedAt: Date,
+    @Json(name = "url") val articleUri: Uri,
+    @Json(name = "urlToImage") val articleImageUri: Uri,
+    @Json(name = "publishedAt") val publishedOn: Date,
     val content: String
 )
 
 
 data class EverythingResponseDto(
-    val status: String,
+    val status: Status,
     val totalResults: Int,
     val articles: List<ArticleDto>
 )
