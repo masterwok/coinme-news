@@ -1,7 +1,8 @@
 package com.masterwok.coinme.features.news.di
 
 import com.masterwok.coinme.di.modules.ViewModelFactoryModule
-import com.masterwok.coinme.features.news.NewsFragment
+import com.masterwok.coinme.features.news.fragments.ArticleFragment
+import com.masterwok.coinme.features.news.fragments.NewsFragment
 import dagger.Subcomponent
 
 @NewsScope
@@ -20,5 +21,6 @@ interface NewsComponent {
     }
 
     fun inject(fragment: NewsFragment)
+    fun inject(fragment: ArticleFragment)
 
 }

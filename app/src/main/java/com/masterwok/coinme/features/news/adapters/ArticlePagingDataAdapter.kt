@@ -1,6 +1,5 @@
 package com.masterwok.coinme.features.news.adapters
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,21 +8,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
 import com.masterwok.coinme.R
 import com.masterwok.coinme.common.contracts.Configurable
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.ViewHolderArticleBinding
 
-class ArticlePagingDataAdapter : PagingDataAdapter<Article, ArticlePagingDataAdapter.ViewHolder>(
+class ArticlePagingDataAdapter(
+    private val onArticleTapped: (article: Article) -> Unit
+) : PagingDataAdapter<Article, ArticlePagingDataAdapter.ViewHolder>(
     DIFF_CALLBACK
 ) {
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder = ViewHolder(
+        onArticleTapped,
         LayoutInflater
             .from(parent.context)
             .inflate(R.layout.view_holder_article, parent, false)
@@ -33,11 +33,16 @@ class ArticlePagingDataAdapter : PagingDataAdapter<Article, ArticlePagingDataAda
         getItem(position)?.let(holder::configure)
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view), Configurable<Article> {
+    class ViewHolder(
+        private val onArticleTapped: (article: Article) -> Unit,
+        view: View
+    ) : RecyclerView.ViewHolder(view), Configurable<Article> {
 
         private val binding = ViewHolderArticleBinding.bind(view)
 
         override fun configure(model: Article) {
+            itemView.setOnClickListener { onArticleTapped(model) }
+
             with(binding) {
                 textViewTitle.text = model.title
                 textViewDescription.text = model.description

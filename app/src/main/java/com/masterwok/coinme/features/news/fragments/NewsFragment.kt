@@ -1,4 +1,4 @@
-package com.masterwok.coinme.features.news
+package com.masterwok.coinme.features.news.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.masterwok.coinme.R
+import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentNewsBinding
 import com.masterwok.coinme.di.AppInjector
+import com.masterwok.coinme.features.news.NewsViewModel
 import com.masterwok.coinme.features.news.adapters.ArticlePagingDataAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -29,7 +32,9 @@ class NewsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val articleAdapter = ArticlePagingDataAdapter()
+    private val navController by lazy { findNavController() }
+
+    private val articleAdapter = ArticlePagingDataAdapter(this::navigateToArticleDetail)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -69,6 +74,11 @@ class NewsFragment : Fragment() {
             }
         }
     }
+
+    private fun navigateToArticleDetail(article: Article) = navController.navigate(
+        R.id.action_newsFragment_to_articleFragment,
+        ArticleFragment.newBundle(article)
+    )
 
 
 }
