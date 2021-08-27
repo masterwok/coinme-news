@@ -12,7 +12,8 @@ interface NewsApiClient {
     @GET("everything")
     suspend fun getNews(
         @Query("apiKey") apiKey: String,
-        @Query("pageIndex") pageIndex: Int,
+        @Query("page") pageIndex: Int,
+        @Query("pageSize") pageSize: Int,
         @Query("from") from: String,
         @Query("q") query: String,
     ): Response<EverythingResponseDto>

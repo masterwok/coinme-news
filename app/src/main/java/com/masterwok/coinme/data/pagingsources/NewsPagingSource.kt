@@ -2,10 +2,10 @@ package com.masterwok.coinme.data.pagingsources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.masterwok.coinme.common.extensions.toIso8601
 import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.data.repositories.models.from
-import java.text.SimpleDateFormat
 import java.util.*
 
 class NewsPagingSource constructor(
@@ -16,18 +16,17 @@ class NewsPagingSource constructor(
         try {
             val pageIndex = params.key ?: PAGE_INDEX_INITIAL
 
-            val foo = SimpleDateFormat("yyyy-MM-dd")
-
             val response = newsApiClient.getNews(
                 apiKey = API_KEY,
                 pageIndex = pageIndex,
-                from = foo.format(Date()),
+                pageSize = params.loadSize,
+                from = Date().toIso8601(),
                 query = "crypto"
             )
 
-
-
             if (!response.isSuccessful) {
+                // TODO (JT): Handle 426 upgrade required error code.
+
                 error("Failed to fetch news.")
             }
 
@@ -40,7 +39,6 @@ class NewsPagingSource constructor(
                 nextKey = if (articles.isEmpty()) null else pageIndex + 1
             )
         } catch (exception: Exception) {
-            val x = 1
             return LoadResult.Error(exception)
         }
     }
