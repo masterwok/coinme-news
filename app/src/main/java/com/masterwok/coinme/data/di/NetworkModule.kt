@@ -8,6 +8,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -26,6 +27,9 @@ class NetworkModule {
     fun provideOkHttpClient(appContext: Context): OkHttpClient = OkHttpClient
         .Builder()
         .addInterceptor(InternetConnectionInterceptor(appContext))
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        })
         .build()
 
     @Singleton
@@ -35,7 +39,7 @@ class NetworkModule {
         moshi: Moshi
     ): Retrofit = Retrofit
         .Builder()
-        .baseUrl("https://storage.googleapis.com/cash-homework/cash-stocks-api/")
+        .baseUrl("https://newsapi.org/v2/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .client(okHttpClient)
         .build()

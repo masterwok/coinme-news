@@ -5,6 +5,8 @@ import androidx.paging.PagingState
 import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.data.repositories.models.from
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NewsPagingSource constructor(
     private val newsApiClient: NewsApiClient
@@ -13,7 +15,17 @@ class NewsPagingSource constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         try {
             val pageIndex = params.key ?: PAGE_INDEX_INITIAL
-            val response = newsApiClient.getNews()
+
+            val foo = SimpleDateFormat("yyyy-MM-dd")
+
+            val response = newsApiClient.getNews(
+                apiKey = API_KEY,
+                pageIndex = pageIndex,
+                from = foo.format(Date()),
+                query = "crypto"
+            )
+
+
 
             if (!response.isSuccessful) {
                 error("Failed to fetch news.")
@@ -28,6 +40,7 @@ class NewsPagingSource constructor(
                 nextKey = if (articles.isEmpty()) null else pageIndex + 1
             )
         } catch (exception: Exception) {
+            val x = 1
             return LoadResult.Error(exception)
         }
     }
@@ -41,6 +54,8 @@ class NewsPagingSource constructor(
     }
 
     private companion object {
+        // TODO (JT): Provide key through DI...
+        private const val API_KEY = "828a6ecc708a4f969a8f60460c4a6e76"
         private const val PAGE_INDEX_INITIAL = 1
     }
 }

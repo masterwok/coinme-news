@@ -4,18 +4,18 @@ import android.net.Uri
 import java.util.*
 
 data class SourceDto(
-    val id: Int,
+    val id: String?,
     val name: String
 )
 
 data class ArticleDto(
     val source: SourceDto,
-    val author: String,
+    val author: String?,
     val title: String,
     val description: String,
-    val url: Uri,
-    val urlToImage: Uri,
-    val publishedAt: Date,
+//    val url: Uri,
+//    val urlToImage: Uri,
+//    val publishedAt: Date,
     val content: String
 )
 
