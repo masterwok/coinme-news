@@ -1,6 +1,7 @@
 package com.masterwok.coinme.data.di
 
 import android.content.Context
+import com.masterwok.coinme.data.clients.moshi.adapters.UriAdapterFactory
 import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.clients.okhttp.interceptors.InternetConnectionInterceptor
 import com.squareup.moshi.Moshi
@@ -20,6 +21,7 @@ class NetworkModule {
     @Provides
     fun provideMoshi(): Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
+        .add(UriAdapterFactory())
         .build()
 
     @Singleton

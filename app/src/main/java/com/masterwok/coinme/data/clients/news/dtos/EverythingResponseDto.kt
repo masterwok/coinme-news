@@ -13,8 +13,8 @@ data class ArticleDto(
     val author: String?,
     val title: String,
     val description: String,
-//    val url: Uri,
-//    val urlToImage: Uri,
+    val url: Uri,
+    val urlToImage: Uri,
 //    val publishedAt: Date,
     val content: String
 )
