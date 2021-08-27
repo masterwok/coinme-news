@@ -11,13 +11,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
-    private val newsApiClient: NewsApiClient
+    private val newsApiClient: NewsApiClient,
+    private val newsApiKey: String
 ) : NewsRepository {
 
     override val articlePagingDataFlow: Flow<PagingData<Article>> = Pager(
         PagingConfig(pageSize = 20)
     ) {
-        NewsPagingSource(newsApiClient)
+        NewsPagingSource(newsApiClient, newsApiKey)
     }.flow
 
 }

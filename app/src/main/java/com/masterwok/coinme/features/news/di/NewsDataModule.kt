@@ -1,13 +1,21 @@
 package com.masterwok.coinme.features.news.di
 
+import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.repositories.NewsRepositoryImpl
 import com.masterwok.coinme.data.repositories.contracts.NewsRepository
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
 @Module
-abstract class NewsDataModule {
+class NewsDataModule {
 
-    @Binds
-    internal abstract fun bind(viewModel: NewsRepositoryImpl): NewsRepository
+    @NewsScope
+    @Provides
+    fun provideNewsRepository(
+        newsApiClient: NewsApiClient
+    ): NewsRepository = NewsRepositoryImpl(
+        newsApiClient,
+        "828a6ecc708a4f969a8f60460c4a6e76"
+    )
+
 }

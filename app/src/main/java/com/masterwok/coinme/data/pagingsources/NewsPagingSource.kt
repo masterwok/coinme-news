@@ -9,7 +9,8 @@ import com.masterwok.coinme.data.repositories.models.from
 import java.util.*
 
 class NewsPagingSource constructor(
-    private val newsApiClient: NewsApiClient
+    private val newsApiClient: NewsApiClient,
+    private val apiKey: String
 ) : PagingSource<Int, Article>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
@@ -17,7 +18,7 @@ class NewsPagingSource constructor(
             val pageIndex = params.key ?: PAGE_INDEX_INITIAL
 
             val response = newsApiClient.getNews(
-                apiKey = API_KEY,
+                apiKey = apiKey,
                 pageIndex = pageIndex,
                 pageSize = params.loadSize,
                 from = Date().toIso8601(),
@@ -53,8 +54,6 @@ class NewsPagingSource constructor(
     }
 
     private companion object {
-        // TODO (JT): Provide key through DI...
-        private const val API_KEY = "828a6ecc708a4f969a8f60460c4a6e76"
         private const val PAGE_INDEX_INITIAL = 1
     }
 }
