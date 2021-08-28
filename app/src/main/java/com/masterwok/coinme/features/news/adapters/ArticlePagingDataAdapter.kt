@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.masterwok.coinme.R
 import com.masterwok.coinme.common.contracts.Configurable
+import com.masterwok.coinme.common.extensions.loadImage
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.ViewHolderArticleBinding
 
@@ -44,31 +45,15 @@ class ArticlePagingDataAdapter(
         override fun configure(model: Article) {
             itemView.setOnClickListener { onArticleTapped(model) }
 
-            configureImagerView(model.articleImageUri)
-
             with(binding) {
                 textViewTitle.text = model.title
                 textViewDescription.text = model.description
+                imageView.loadImage(model.articleImageUri)
             }
         }
-
-        private fun configureImagerView(articleImageUri: Uri?) = Glide
-            .with(binding.imageView)
-            .load(articleImageUri)
-            .placeholder(CircularProgressDrawable(itemView.context).apply {
-                strokeWidth = PLACEHOLDER_IMAGE_STROKE_WIDTH
-                centerRadius = PLACEHOLDER_IMAGE_CENTER_RADIUS
-                start()
-            })
-            .fallback(R.drawable.ic_baseline_image_not_supported_24)
-            .centerCrop()
-            .into(binding.imageView)
     }
 
     private companion object {
-        private const val PLACEHOLDER_IMAGE_STROKE_WIDTH = 5f
-        private const val PLACEHOLDER_IMAGE_CENTER_RADIUS = 30f
-
         private val DIFF_CALLBACK by lazy {
             object : DiffUtil.ItemCallback<Article>() {
                 override fun areItemsTheSame(

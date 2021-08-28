@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.masterwok.coinme.common.extensions.loadImage
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentArticleBinding
 import com.masterwok.coinme.di.AppInjector
@@ -47,7 +48,6 @@ class ArticleFragment : Fragment() {
 
         initNavigation()
 
-
         configure(article)
     }
 
@@ -57,7 +57,11 @@ class ArticleFragment : Fragment() {
     )
 
     private fun configure(article: Article) = with(binding) {
-        textViewContent.text = article.content
+        imageView.loadImage(article.articleImageUri)
+
+//        textViewContent.text = article.content
+
+        textViewContent.text = (0..20000).joinToString(" ") { "a" }
     }
 
     companion object {
