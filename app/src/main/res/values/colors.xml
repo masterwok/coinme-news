@@ -6,7 +6,7 @@
     <color name="secondaryColor">#1ee66e</color>
     <color name="secondaryLightColor">#6dff9e</color>
     <color name="secondaryDarkColor">#00b23f</color>
-    <color name="primaryTextColor">#1ee66e</color>
+    <color name="primaryTextColor">@color/coinme_green</color>
     <color name="secondaryTextColor">#000000</color>
 
     <color name="coinme_green">#1EE66E</color>

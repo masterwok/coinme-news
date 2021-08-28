@@ -45,7 +45,7 @@ class ArticleFragment : Fragment() {
     }
 
     private fun configure(article: Article) = with(binding) {
-        textViewContent.text = article.description
+        textViewContent.text = article.content
     }
 
     companion object {
