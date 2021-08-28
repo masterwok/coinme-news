@@ -15,8 +15,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.masterwok.coinme.R
+import com.masterwok.coinme.common.adapters.SpinnerLoadStateAdapter
 import com.masterwok.coinme.common.utils.presentNetworkFailureDialog
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentNewsBinding
@@ -41,6 +43,8 @@ class NewsFragment : Fragment() {
     private val navController by lazy { findNavController() }
 
     private val articleAdapter = ArticlePagingDataAdapter(this::navigateToArticleDetail)
+
+    private val spinnerLoadStateAdapter = SpinnerLoadStateAdapter { articleAdapter.retry() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,9 +86,14 @@ class NewsFragment : Fragment() {
     }
 
     private fun initRecyclerView() = with(binding.recyclerView) {
-        adapter = articleAdapter.apply {
-            addLoadStateListener(::onLoadStateListenerChange)
-        }
+        adapter = ConcatAdapter(
+            articleAdapter.apply {
+                addLoadStateListener(::onLoadStateListenerChange)
+                withLoadStateFooter(spinnerLoadStateAdapter)
+            },
+            spinnerLoadStateAdapter
+        )
+
         layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.VERTICAL,
