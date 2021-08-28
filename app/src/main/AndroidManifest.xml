@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".features.news.fragments.WebViewActivity"
+            android:name=".common.activity.WebViewActivity"
             android:theme="@style/Theme.Coinme.NoActionBar" />
     </application>
 

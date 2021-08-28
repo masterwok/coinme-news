@@ -2,7 +2,6 @@ package com.masterwok.coinme.features.news.di
 
 import com.masterwok.coinme.di.modules.ViewModelFactoryModule
 import com.masterwok.coinme.features.news.fragments.ArticleFragment
-import com.masterwok.coinme.features.news.fragments.WebViewActivity
 import com.masterwok.coinme.features.news.fragments.NewsFragment
 import dagger.Subcomponent
 

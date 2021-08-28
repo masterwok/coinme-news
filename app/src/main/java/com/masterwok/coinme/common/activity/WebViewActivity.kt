@@ -1,4 +1,4 @@
-package com.masterwok.coinme.features.news.fragments
+package com.masterwok.coinme.common.activity
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -9,6 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import com.masterwok.coinme.R
 import com.masterwok.coinme.databinding.ActivityWebViewBinding
 
 class WebViewActivity : AppCompatActivity() {
@@ -28,9 +29,15 @@ class WebViewActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        initToolbar()
         initWebView()
 
         configure(articleUri)
+    }
+
+    private fun initToolbar() = with(binding.toolbar) {
+        setNavigationIcon(R.drawable.ic_baseline_close_24)
+        setNavigationOnClickListener { finish() }
     }
 
     @SuppressLint("SetJavaScriptEnabled")

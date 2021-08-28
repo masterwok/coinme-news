@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/articleWebViewFragment"
-        android:name="com.masterwok.coinme.features.news.fragments.WebViewActivity"
+        android:name="com.masterwok.coinme.common.activity.WebViewActivity"
         android:label=""
         tools:layout="@layout/activity_web_view" />
     <fragment

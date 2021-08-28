@@ -1,7 +1,6 @@
 package com.masterwok.coinme.features.news.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.masterwok.coinme.R
+import com.masterwok.coinme.common.activity.WebViewActivity
 import com.masterwok.coinme.common.extensions.currentLocale
 import com.masterwok.coinme.common.extensions.getShortDisplayString
 import com.masterwok.coinme.common.extensions.loadImage
