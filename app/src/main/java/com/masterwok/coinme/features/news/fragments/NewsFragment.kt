@@ -2,9 +2,7 @@ package com.masterwok.coinme.features.news.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -76,7 +74,9 @@ class NewsFragment : Fragment() {
     }
 
     private fun initNavigation() {
-        val toolbar = binding.toolbar
+        val toolbar = binding.toolbar.apply {
+            inflateMenu(R.menu.news_fragment)
+        }
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.newsFragment)
