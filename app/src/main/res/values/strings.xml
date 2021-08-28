@@ -3,4 +3,5 @@
     <string name="fragment_news_label">Coinme News</string>
     <string name="article_label_source">Source:</string>
     <string name="article_label_published_on">Published On:</string>
+    <string name="article_button_continue_reading">Continue Reading</string>
 </resources>

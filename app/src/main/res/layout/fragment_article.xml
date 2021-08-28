@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/textViewLabelPublishedOn"
@@ -82,11 +82,24 @@
                 android:layout_marginTop="16dp"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewTitle"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonContinueReading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp"
+                android:background="@drawable/background_button_flat"
+                android:text="@string/article_button_continue_reading"
+                android:textAllCaps="true"
+                android:textColor="@color/primaryDarkColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewContent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
