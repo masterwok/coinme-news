@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentArticleBinding
 import com.masterwok.coinme.di.AppInjector
@@ -16,6 +18,8 @@ class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
 
     private val binding get() = _binding!!
+
+    private val navController by lazy { findNavController() }
 
     private val article by lazy {
         checkNotNull(requireArguments().getParcelable<Article>(ARG_ARTICLE)) {
@@ -41,8 +45,16 @@ class ArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initNavigation()
+
+
         configure(article)
     }
+
+    private fun initNavigation() = NavigationUI.setupWithNavController(
+        binding.toolbar,
+        navController
+    )
 
     private fun configure(article: Article) = with(binding) {
         textViewContent.text = article.content

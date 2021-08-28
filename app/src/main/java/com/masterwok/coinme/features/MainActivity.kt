@@ -22,23 +22,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
-        setSupportActionBar(binding.activityMainContent.toolbar)
-
-        configureNavigation()
-    }
-
-    private fun configureNavigation() = with(binding) {
-        val navController = findNavController(R.id.navHostFragmentContainer)
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.newsFragment),
-            drawerLayout
-        )
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        navView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.masterwok.coinme.R
 import com.masterwok.coinme.data.repositories.models.Article
@@ -54,8 +57,19 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initNavigation()
         initRecyclerView()
         observeViewModel()
+    }
+
+    private fun initNavigation() {
+        val toolbar = binding.toolbar
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.newsFragment)
+        )
+
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
     }
 
     private fun initRecyclerView() = with(binding.recyclerView) {
