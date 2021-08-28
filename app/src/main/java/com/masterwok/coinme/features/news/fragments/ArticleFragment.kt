@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ShareCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import com.masterwok.coinme.common.activity.WebViewActivity
 import com.masterwok.coinme.common.extensions.currentLocale
 import com.masterwok.coinme.common.extensions.getShortDisplayString
 import com.masterwok.coinme.common.extensions.loadImage
+import com.masterwok.coinme.common.extensions.shareUrl
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentArticleBinding
 import com.masterwok.coinme.di.AppInjector
@@ -54,11 +56,16 @@ class ArticleFragment : Fragment() {
         initNavigation()
         subscribeToViewComponents()
         configure(article)
-
     }
 
     private fun subscribeToViewComponents() = with(binding) {
-        buttonContinueReading.setOnClickListener { navigateToArticleWebView(article.articleUri) }
+        val articleUri = article.articleUri
+
+        buttonContinueReading.setOnClickListener { navigateToArticleWebView(articleUri) }
+
+        floatingActionButtonShare.setOnClickListener {
+            requireContext().shareUrl(articleUri.toString())
+        }
     }
 
     private fun navigateToArticleWebView(articleUri: Uri) {
