@@ -9,11 +9,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import com.masterwok.coinme.databinding.FragmentArticleWebViewBinding
+import com.masterwok.coinme.databinding.ActivityWebViewBinding
 
 class WebViewActivity : AppCompatActivity() {
 
-    private lateinit var binding: FragmentArticleWebViewBinding
+    private lateinit var binding: ActivityWebViewBinding
 
     private val articleUri by lazy {
         checkNotNull(intent.getParcelableExtra<Uri>(EXTRA_ARTICLE_URI)) {
@@ -24,7 +24,7 @@ class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = FragmentArticleWebViewBinding.inflate(layoutInflater)
+        binding = ActivityWebViewBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
