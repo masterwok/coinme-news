@@ -1,6 +1,8 @@
 package com.masterwok.coinme.features.news.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.masterwok.coinme.R
 import com.masterwok.coinme.common.extensions.currentLocale
 import com.masterwok.coinme.common.extensions.getShortDisplayString
 import com.masterwok.coinme.common.extensions.loadImage
@@ -49,8 +52,20 @@ class ArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initNavigation()
-
+        subscribeToViewComponents()
         configure(article)
+
+    }
+
+    private fun subscribeToViewComponents() = with(binding) {
+        buttonContinueReading.setOnClickListener { navigateToArticleWebView(article.articleUri) }
+    }
+
+    private fun navigateToArticleWebView(articleUri: Uri) {
+        navController.navigate(
+            R.id.action_articleFragment_to_articleWebViewFragment,
+            WebViewActivity.createBundle(articleUri)
+        )
     }
 
     private fun initNavigation() = NavigationUI.setupWithNavController(
