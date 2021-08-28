@@ -23,8 +23,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 class ArticleFragment : Fragment() {
 
     private var _binding: FragmentArticleBinding? = null
@@ -62,6 +60,7 @@ class ArticleFragment : Fragment() {
         configure(article)
     }
 
+    @OptIn(FlowPreview::class)
     private fun subscribeToViewComponents() = with(binding) {
         val articleUri = article.articleUri
 

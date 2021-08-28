@@ -13,8 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.masterwok.coinme.R
+import com.masterwok.coinme.common.utils.presentNetworkFailureDialog
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentNewsBinding
 import com.masterwok.coinme.di.AppInjector
@@ -60,6 +63,12 @@ class NewsFragment : Fragment() {
         initNavigation()
         initRecyclerView()
         observeViewModel()
+
+        subscribeToViewComponents()
+    }
+
+    private fun subscribeToViewComponents() = with(binding) {
+        swipeRefreshLayout.setOnRefreshListener { articleAdapter.refresh() }
     }
 
     private fun initNavigation() {
@@ -73,7 +82,9 @@ class NewsFragment : Fragment() {
     }
 
     private fun initRecyclerView() = with(binding.recyclerView) {
-        adapter = articleAdapter
+        adapter = articleAdapter.apply {
+            addLoadStateListener(::onLoadStateListenerChange)
+        }
         layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.VERTICAL,
@@ -88,6 +99,25 @@ class NewsFragment : Fragment() {
             }
         }
     }
+
+    private fun onLoadStateListenerChange(listener: CombinedLoadStates) {
+        with(binding) {
+            when (val refresh = listener.refresh) {
+                LoadState.Loading -> swipeRefreshLayout.isRefreshing = true
+                is LoadState.NotLoading -> swipeRefreshLayout.isRefreshing = false
+                is LoadState.Error -> {
+                    swipeRefreshLayout.isRefreshing = false
+
+                    presentNetworkFailureDialog(
+                        requireContext(),
+                        refresh.error,
+                        articleAdapter::refresh
+                    )
+                }
+            }
+        }
+    }
+
 
     private fun navigateToArticleDetail(article: Article) = navController.navigate(
         R.id.action_newsFragment_to_articleFragment,

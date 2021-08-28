@@ -4,4 +4,10 @@
     <string name="article_label_source">Source:</string>
     <string name="article_label_published_on">Published On:</string>
     <string name="article_button_continue_reading">Continue Reading</string>
+    <string name="ok">OK</string>
+    <string name="not_connected_dialog_title">A network connection could not be established.</string>
+    <string name="not_connected_dialog_message">Please make sure your cellular/WiFi connection is working and try again.</string>
+    <string name="oops_dialog_message_retry">We\'re working on getting it fixed. You can reload or try again later!</string>
+    <string name="oops_dialog_title">Oops! Something went wrong!</string>
+    <string name="retry">Retry</string>
 </resources>
