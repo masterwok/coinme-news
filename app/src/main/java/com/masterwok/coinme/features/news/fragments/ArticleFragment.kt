@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.masterwok.coinme.common.extensions.currentLocale
+import com.masterwok.coinme.common.extensions.getShortDisplayString
 import com.masterwok.coinme.common.extensions.loadImage
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentArticleBinding
@@ -57,11 +59,16 @@ class ArticleFragment : Fragment() {
     )
 
     private fun configure(article: Article) = with(binding) {
-        imageView.loadImage(article.articleImageUri)
+        val currentLocale = requireContext().currentLocale
 
-//        textViewContent.text = article.content
+        with(article) {
+            imageView.loadImage(articleImageUri)
 
-        textViewContent.text = (0..20000).joinToString(" ") { "a" }
+            textViewTitle.text = title
+            textViewContent.text = content
+            textViewSource.text = source.name
+            textViewPublishedOn.text = publishedOn.getShortDisplayString(currentLocale)
+        }
     }
 
     companion object {
