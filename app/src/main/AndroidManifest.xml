@@ -12,11 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Coinmecodingchallenge">
+        android:theme="@style/Theme.Coinme">
         <activity
             android:name=".features.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Coinmecodingchallenge.NoActionBar">
+            android:theme="@style/Theme.Coinme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
