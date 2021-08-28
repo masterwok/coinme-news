@@ -1,5 +1,6 @@
 package com.masterwok.coinme.features.news.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,22 +44,25 @@ class ArticlePagingDataAdapter(
         override fun configure(model: Article) {
             itemView.setOnClickListener { onArticleTapped(model) }
 
+            configureImagerView(model.articleImageUri)
+
             with(binding) {
                 textViewTitle.text = model.title
                 textViewDescription.text = model.description
-
-                Glide
-                    .with(imageView)
-                    .load(model.articleImageUri)
-                    .placeholder(CircularProgressDrawable(itemView.context).apply {
-                        strokeWidth = PLACEHOLDER_IMAGE_STROKE_WIDTH
-                        centerRadius = PLACEHOLDER_IMAGE_CENTER_RADIUS
-                        start()
-                    })
-                    .centerCrop()
-                    .into(imageView)
             }
         }
+
+        private fun configureImagerView(articleImageUri: Uri?) = Glide
+            .with(binding.imageView)
+            .load(articleImageUri)
+            .placeholder(CircularProgressDrawable(itemView.context).apply {
+                strokeWidth = PLACEHOLDER_IMAGE_STROKE_WIDTH
+                centerRadius = PLACEHOLDER_IMAGE_CENTER_RADIUS
+                start()
+            })
+            .fallback(R.drawable.ic_baseline_image_not_supported_24)
+            .centerCrop()
+            .into(binding.imageView)
     }
 
     private companion object {
