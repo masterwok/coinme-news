@@ -6,21 +6,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ShareCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.masterwok.coinme.R
 import com.masterwok.coinme.common.activity.WebViewActivity
-import com.masterwok.coinme.common.extensions.currentLocale
-import com.masterwok.coinme.common.extensions.getShortDisplayString
-import com.masterwok.coinme.common.extensions.loadImage
-import com.masterwok.coinme.common.extensions.shareUrl
+import com.masterwok.coinme.common.extensions.*
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentArticleBinding
 import com.masterwok.coinme.di.AppInjector
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class ArticleFragment : Fragment() {
 
     private var _binding: FragmentArticleBinding? = null
@@ -61,11 +65,17 @@ class ArticleFragment : Fragment() {
     private fun subscribeToViewComponents() = with(binding) {
         val articleUri = article.articleUri
 
-        buttonContinueReading.setOnClickListener { navigateToArticleWebView(articleUri) }
+        buttonContinueReading
+            .onClicked()
+            .debounce(DEBOUNCE_TIME_MS)
+            .onEach { navigateToArticleWebView(articleUri) }
+            .launchIn(lifecycleScope)
 
-        floatingActionButtonShare.setOnClickListener {
-            requireContext().shareUrl(articleUri.toString())
-        }
+        floatingActionButtonShare
+            .onClicked()
+            .debounce(DEBOUNCE_TIME_MS)
+            .onEach { requireContext().shareUrl(articleUri.toString()) }
+            .launchIn(lifecycleScope)
     }
 
     private fun navigateToArticleWebView(articleUri: Uri) {
@@ -95,6 +105,7 @@ class ArticleFragment : Fragment() {
 
     companion object {
         private const val ARG_ARTICLE = "arg.article"
+        private const val DEBOUNCE_TIME_MS = 250L
 
         @JvmStatic
         fun newBundle(article: Article) = bundleOf(ARG_ARTICLE to article)
