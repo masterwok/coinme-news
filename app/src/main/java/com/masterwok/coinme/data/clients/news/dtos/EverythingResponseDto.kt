@@ -16,7 +16,7 @@ data class ArticleDto(
     val title: String,
     val description: String,
     @Json(name = "url") val articleUri: Uri,
-    @Json(name = "urlToImage") val articleImageUri: Uri,
+    @Json(name = "urlToImage") val articleImageUri: Uri?,
     @Json(name = "publishedAt") val publishedOn: Date,
     val content: String
 )

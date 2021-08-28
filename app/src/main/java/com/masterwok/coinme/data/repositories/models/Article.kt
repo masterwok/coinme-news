@@ -29,7 +29,7 @@ data class Article(
     val title: String,
     val description: String,
     val articleUri: Uri,
-    val articleImageUri: Uri,
+    val articleImageUri: Uri?,
     val publishedOn: Calendar,
     val content: String
 ) : Parcelable {

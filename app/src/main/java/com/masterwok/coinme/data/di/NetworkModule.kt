@@ -1,13 +1,13 @@
 package com.masterwok.coinme.data.di
 
 import android.content.Context
+import android.net.Uri
 import com.masterwok.coinme.data.clients.moshi.adapters.StatusAdapter
-import com.masterwok.coinme.data.clients.moshi.adapters.UriAdapterFactory
+import com.masterwok.coinme.data.clients.moshi.adapters.UriJsonAdapter
 import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.clients.news.constants.Status
 import com.masterwok.coinme.data.clients.okhttp.interceptors.InternetConnectionInterceptor
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -27,8 +27,8 @@ class NetworkModule {
     fun provideMoshi(): Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
-        .add(UriAdapterFactory())
-        .add(StatusAdapter())
+        .add(Uri::class.java, UriJsonAdapter().nullSafe())
+        .add(Status::class.java, StatusAdapter())
         .build()
 
     @Singleton
