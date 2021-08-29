@@ -1,5 +1,6 @@
 package com.masterwok.coinme.features.news.fragments
 
+import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -17,12 +18,14 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.masterwok.coinme.R
 import com.masterwok.coinme.common.adapters.SpinnerLoadStateAdapter
+import com.masterwok.coinme.common.extensions.searchManager
 import com.masterwok.coinme.common.utils.presentNetworkFailureDialog
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.databinding.FragmentNewsBinding
 import com.masterwok.coinme.di.AppInjector
 import com.masterwok.coinme.features.news.NewsViewModel
 import com.masterwok.coinme.features.news.adapters.ArticlePagingDataAdapter
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,21 +49,21 @@ class NewsFragment : Fragment() {
 
     private val currentFilter get() = viewModel.filterStateFlow.value
 
-    private val searchView by lazy {
-        binding
+    private val searchView
+        get() = binding
             .toolbar
             .menu
             .findItem(R.id.menu_item_search)
             .actionView as SearchView
-    }
 
     private val searchViewQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             viewModel.searchNews(currentFilter.copy(query = query))
+            searchView.clearFocus()
             return true
         }
 
-        override fun onQueryTextChange(newText: String?): Boolean = true
+        override fun onQueryTextChange(newText: String?): Boolean = false
     }
 
     override fun onAttach(context: Context) {
@@ -83,21 +86,11 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initNavigation()
+        initSearchView()
         initRecyclerView()
         observeViewModel()
 
         subscribeToViewComponents()
-    }
-
-    private fun subscribeToViewComponents() = with(binding) {
-        swipeRefreshLayout.setOnRefreshListener { articleAdapter.refresh() }
-
-        searchView.setOnQueryTextListener(this@NewsFragment.searchViewQueryTextListener)
-        searchView.setOnSearchClickListener {
-            searchView.post {
-                searchView.setQuery(currentFilter.query, false)
-            }
-        }
     }
 
     private fun initNavigation() {
@@ -110,6 +103,12 @@ class NewsFragment : Fragment() {
         )
 
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
+    }
+
+    private fun initSearchView() = with(requireActivity()) {
+        searchManager
+            .getSearchableInfo(componentName)
+            .let(searchView::setSearchableInfo)
     }
 
     private fun initRecyclerView() = with(binding.recyclerView) {
@@ -128,6 +127,17 @@ class NewsFragment : Fragment() {
         )
     }
 
+    private fun subscribeToViewComponents() = with(binding) {
+        swipeRefreshLayout.setOnRefreshListener { articleAdapter.refresh() }
+
+        searchView.setOnQueryTextListener(searchViewQueryTextListener)
+        searchView.setOnSearchClickListener {
+            searchView.post {
+                searchView.setQuery(currentFilter.query, false)
+            }
+        }
+    }
+
     private fun observeViewModel() = with(viewLifecycleOwner.lifecycleScope) {
         launch {
             viewModel.articlePagingDataFlow.collectLatest { pagingData ->
@@ -136,7 +146,7 @@ class NewsFragment : Fragment() {
         }
 
         launch {
-            viewModel.filterStateFlow.collectLatest { filter ->
+            viewModel.filterStateFlow.collect { filter ->
                 searchView.setQuery(filter.query, false)
             }
         }

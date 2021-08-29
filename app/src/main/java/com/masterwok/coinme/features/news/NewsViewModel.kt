@@ -27,7 +27,6 @@ class NewsViewModel @Inject constructor(
             .cachedIn(viewModelScope)
     }
 
-
     fun searchNews(newsFilter: NewsFilter) {
         _filterStateFlow.value = newsFilter
     }

@@ -1,5 +1,6 @@
 package com.masterwok.coinme.common.extensions
 
+import android.app.SearchManager
 import android.content.Context
 import androidx.core.app.ShareCompat
 import androidx.core.os.ConfigurationCompat
@@ -18,3 +19,8 @@ fun Context.shareUrl(url: String) = ShareCompat
     .setType("text/plain")
     .setText(url)
     .startChooser();
+
+/**
+ * Get the system [SearchManager].
+ */
+val Context.searchManager get() = getSystemService(Context.SEARCH_SERVICE) as SearchManager
