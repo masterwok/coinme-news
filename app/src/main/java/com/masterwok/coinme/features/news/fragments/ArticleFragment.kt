@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.appbar.AppBarLayout
 import com.masterwok.coinme.R
 import com.masterwok.coinme.common.activity.WebViewActivity
 import com.masterwok.coinme.common.extensions.*
@@ -22,6 +23,11 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import androidx.annotation.NonNull
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.appbar.AppBarLayout.Behavior.DragCallback
+
 
 class ArticleFragment : Fragment() {
 
@@ -58,6 +64,8 @@ class ArticleFragment : Fragment() {
         initNavigation()
         subscribeToViewComponents()
         configure(article)
+
+        binding.appBarLayout.disableDrag()
     }
 
     @OptIn(FlowPreview::class)
