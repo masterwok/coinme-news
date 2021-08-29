@@ -57,12 +57,10 @@ class NewsFragment : Fragment() {
     private val searchViewQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             viewModel.searchNews(currentFilter.copy(query = query))
-            return false
+            return true
         }
 
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
+        override fun onQueryTextChange(newText: String?): Boolean = true
     }
 
     override fun onAttach(context: Context) {
@@ -95,7 +93,11 @@ class NewsFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener { articleAdapter.refresh() }
 
         searchView.setOnQueryTextListener(this@NewsFragment.searchViewQueryTextListener)
-        searchView.setOnSearchClickListener { searchView.setQuery(currentFilter.query, false) }
+        searchView.setOnSearchClickListener {
+            searchView.post {
+                searchView.setQuery(currentFilter.query, false)
+            }
+        }
     }
 
     private fun initNavigation() {
