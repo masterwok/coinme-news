@@ -1,12 +1,9 @@
 package com.masterwok.coinme.features.news.fragments
 
-import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -47,9 +44,19 @@ class NewsFragment : Fragment() {
 
     private val spinnerLoadStateAdapter = SpinnerLoadStateAdapter { articleAdapter.retry() }
 
+    private val currentFilter get() = viewModel.filterStateFlow.value
+
+    private val searchView by lazy {
+        binding
+            .toolbar
+            .menu
+            .findItem(R.id.menu_item_search)
+            .actionView as SearchView
+    }
+
     private val searchViewQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            val x = 1
+            viewModel.searchNews(currentFilter.copy(query = query))
             return false
         }
 
@@ -74,21 +81,10 @@ class NewsFragment : Fragment() {
         return binding.root
     }
 
-    private fun initSearchView() {
-        val searchView = binding
-            .toolbar
-            .menu
-            .findItem(R.id.menu_item_search)
-            .actionView as SearchView
-
-        searchView.setOnQueryTextListener(this@NewsFragment.searchViewQueryTextListener)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initNavigation()
-        initSearchView()
         initRecyclerView()
         observeViewModel()
 
@@ -97,6 +93,9 @@ class NewsFragment : Fragment() {
 
     private fun subscribeToViewComponents() = with(binding) {
         swipeRefreshLayout.setOnRefreshListener { articleAdapter.refresh() }
+
+        searchView.setOnQueryTextListener(this@NewsFragment.searchViewQueryTextListener)
+        searchView.setOnSearchClickListener { searchView.setQuery(currentFilter.query, false) }
     }
 
     private fun initNavigation() {
@@ -129,8 +128,14 @@ class NewsFragment : Fragment() {
 
     private fun observeViewModel() = with(viewLifecycleOwner.lifecycleScope) {
         launch {
-            viewModel.articlePagingDataFlow.collectLatest {
-                articleAdapter.submitData(it)
+            viewModel.articlePagingDataFlow.collectLatest { pagingData ->
+                articleAdapter.submitData(pagingData)
+            }
+        }
+
+        launch {
+            viewModel.filterStateFlow.collectLatest { filter ->
+                searchView.setQuery(filter.query, false)
             }
         }
     }
@@ -153,11 +158,9 @@ class NewsFragment : Fragment() {
         }
     }
 
-
     private fun navigateToArticleDetail(article: Article) = navController.navigate(
         R.id.action_newsFragment_to_articleFragment,
         ArticleFragment.newBundle(article)
     )
-
 
 }

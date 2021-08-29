@@ -5,12 +5,14 @@ import androidx.paging.PagingState
 import com.masterwok.coinme.common.extensions.toIso8601
 import com.masterwok.coinme.data.clients.news.NewsApiClient
 import com.masterwok.coinme.data.repositories.models.Article
+import com.masterwok.coinme.data.repositories.models.NewsFilter
 import com.masterwok.coinme.data.repositories.models.from
 import java.util.*
 
 class NewsPagingSource constructor(
     private val newsApiClient: NewsApiClient,
-    private val apiKey: String
+    private val apiKey: String,
+    private val newsFilter: NewsFilter
 ) : PagingSource<Int, Article>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
@@ -22,12 +24,10 @@ class NewsPagingSource constructor(
                 pageIndex = pageIndex,
                 pageSize = params.loadSize,
                 from = Date().toIso8601(),
-                query = "crypto"
+                query = newsFilter.query
             )
 
             if (!response.isSuccessful) {
-                // TODO (JT): Handle 426 upgrade required error code.
-
                 error("Failed to fetch news.")
             }
 

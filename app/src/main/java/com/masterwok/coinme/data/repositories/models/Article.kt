@@ -4,30 +4,15 @@ import android.net.Uri
 import android.os.Parcelable
 import com.masterwok.coinme.common.extensions.toCalendar
 import com.masterwok.coinme.data.clients.news.dtos.ArticleDto
-import com.masterwok.coinme.data.clients.news.dtos.SourceDto
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-@Parcelize
-data class Source(
-    val id: String?,
-    val name: String
-) : Parcelable {
-    companion object {
-        fun from(source: SourceDto) = with(source) {
-            Source(
-                id = id,
-                name = name
-            )
-        }
-    }
-}
 
 @Parcelize
 data class Article(
     val source: Source,
     val title: String,
-    val description: String,
+    val description: String?,
     val articleUri: Uri,
     val articleImageUri: Uri?,
     val publishedOn: Calendar,

@@ -15,7 +15,7 @@ interface NewsApiClient {
         @Query("page") pageIndex: Int,
         @Query("pageSize") pageSize: Int,
         @Query("from") from: String,
-        @Query("q") query: String,
+        @Query("q") query: String?,
     ): Response<EverythingResponseDto>
 
 }

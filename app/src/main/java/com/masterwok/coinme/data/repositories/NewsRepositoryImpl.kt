@@ -2,12 +2,11 @@ package com.masterwok.coinme.data.repositories
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.masterwok.coinme.data.clients.news.NewsApiClient
-import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.data.pagingsources.NewsPagingSource
 import com.masterwok.coinme.data.repositories.contracts.NewsRepository
-import kotlinx.coroutines.flow.Flow
+import com.masterwok.coinme.data.repositories.models.Article
+import com.masterwok.coinme.data.repositories.models.NewsFilter
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
@@ -15,10 +14,14 @@ class NewsRepositoryImpl @Inject constructor(
     private val newsApiKey: String
 ) : NewsRepository {
 
-    override val articlePagingDataFlow: Flow<PagingData<Article>> = Pager(
+    override fun getNewsPager(newsFilter: NewsFilter): Pager<Int, Article> = Pager(
         PagingConfig(pageSize = 20)
     ) {
-        NewsPagingSource(newsApiClient, newsApiKey)
-    }.flow
+        NewsPagingSource(
+            newsApiClient,
+            newsApiKey,
+            newsFilter
+        )
+    }
 
 }
