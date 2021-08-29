@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +27,7 @@ import com.masterwok.coinme.features.news.NewsViewModel
 import com.masterwok.coinme.features.news.adapters.ArticlePagingDataAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -87,6 +89,7 @@ class NewsFragment : Fragment() {
 
         initNavigation()
         initSearchView()
+        initAdapter()
         initRecyclerView()
         observeViewModel()
 
@@ -112,19 +115,40 @@ class NewsFragment : Fragment() {
     }
 
     private fun initRecyclerView() = with(binding.recyclerView) {
-        adapter = ConcatAdapter(
-            articleAdapter.apply {
-                addLoadStateListener(::onLoadStateListenerChange)
-                withLoadStateFooter(spinnerLoadStateAdapter)
-            },
-            spinnerLoadStateAdapter
-        )
+        adapter = ConcatAdapter(articleAdapter, spinnerLoadStateAdapter)
 
         layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.VERTICAL,
             false
         )
+    }
+
+    private fun initAdapter() {
+        articleAdapter.apply {
+            addLoadStateListener(::onLoadStateListenerChange)
+            withLoadStateFooter(spinnerLoadStateAdapter)
+        }
+
+        lifecycleScope.launchWhenResumed {
+            articleAdapter
+                .loadStateFlow
+                .map { it.refresh }
+                .collect { onRefreshLoadStateChange(it) }
+        }
+    }
+
+    private fun onRefreshLoadStateChange(loadState: LoadState) {
+        if (loadState !is LoadState.NotLoading) {
+            return
+        }
+
+        val isAdapterEmpty = articleAdapter.itemCount == 0
+
+        with(binding) {
+            viewNoResultsMessage.linearLayoutRoot.isVisible = isAdapterEmpty
+            recyclerView.isVisible = !isAdapterEmpty
+        }
     }
 
     private fun subscribeToViewComponents() = with(binding) {

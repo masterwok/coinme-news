@@ -12,4 +12,6 @@
     <string name="retry">Retry</string>
     <string name="failed_to_load">Failed to load</string>
     <string name="search">Search</string>
+    <string name="news_no_results_title">No News Found</string>
+    <string name="news_no_results_message">We\'re unable to find any news articles related to your search term at this time. Please try agin later!</string>
 </resources>

@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/fragment_news.xml" value="0.33489583333333334" />
         <entry key="app/src/main/res/layout/view_holder_article.xml" value="0.28216704288939054" />
         <entry key="app/src/main/res/layout/view_holder_spinner_load_state.xml" value="0.5614583333333333" />
+        <entry key="app/src/main/res/layout/view_news_no_results.xml" value="0.38461538461538464" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.3203125" />
         <entry key="app/src/main/res/menu/news_fragment.xml" value="0.33489583333333334" />
       </map>
