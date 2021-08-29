@@ -1,9 +1,12 @@
 package com.masterwok.coinme.features.news.fragments
 
+import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +47,17 @@ class NewsFragment : Fragment() {
 
     private val spinnerLoadStateAdapter = SpinnerLoadStateAdapter { articleAdapter.retry() }
 
+    private val searchViewQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            val x = 1
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return false
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -51,7 +65,8 @@ class NewsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
@@ -59,10 +74,21 @@ class NewsFragment : Fragment() {
         return binding.root
     }
 
+    private fun initSearchView() {
+        val searchView = binding
+            .toolbar
+            .menu
+            .findItem(R.id.menu_item_search)
+            .actionView as SearchView
+
+        searchView.setOnQueryTextListener(this@NewsFragment.searchViewQueryTextListener)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initNavigation()
+        initSearchView()
         initRecyclerView()
         observeViewModel()
 
