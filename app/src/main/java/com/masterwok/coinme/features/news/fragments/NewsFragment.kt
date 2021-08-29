@@ -1,6 +1,5 @@
 package com.masterwok.coinme.features.news.fragments
 
-import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -60,6 +59,7 @@ class NewsFragment : Fragment() {
         override fun onQueryTextSubmit(query: String?): Boolean {
             viewModel.searchNews(currentFilter.copy(query = query))
             searchView.clearFocus()
+            binding.recyclerView.scrollToPosition(0)
             return true
         }
 

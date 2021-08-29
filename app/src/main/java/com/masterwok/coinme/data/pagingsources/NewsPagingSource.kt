@@ -1,5 +1,6 @@
 package com.masterwok.coinme.data.pagingsources
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.masterwok.coinme.common.extensions.toIso8601
@@ -28,7 +29,7 @@ class NewsPagingSource constructor(
             )
 
             if (!response.isSuccessful) {
-                error("Failed to fetch news.")
+                error("Fetch news request unsuccessful: ${response.code()}")
             }
 
             val everythingResponseDto = checkNotNull(response.body())
@@ -40,7 +41,7 @@ class NewsPagingSource constructor(
                 nextKey = if (articles.isEmpty()) null else pageIndex + 1
             )
         } catch (exception: Exception) {
-            val x = 1
+            Log.e(TAG, "Failed to fetch news", exception)
             return LoadResult.Error(exception)
         }
     }
@@ -54,6 +55,7 @@ class NewsPagingSource constructor(
     }
 
     private companion object {
+        private const val TAG = "NewsPagingSource"
         private const val PAGE_INDEX_INITIAL = 1
     }
 }
