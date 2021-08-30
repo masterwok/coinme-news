@@ -18,6 +18,9 @@ The architectural layers that exist in the application:
 - Repositories
 - Clients
 
+## Notes
+- It's possible for the developer API keys to reach their request limits. Should this occur please update the key within `NewsDataModule.kt`
+
 ## Screenshots
 
 The below screenshots show the entirety of the application:
