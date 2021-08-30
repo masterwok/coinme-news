@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.masterwok.coinme.common.extensions.toIso8601
 import com.masterwok.coinme.data.clients.news.NewsApiClient
+import com.masterwok.coinme.data.clients.exceptions.TooManyRequestsException
 import com.masterwok.coinme.data.repositories.models.Article
 import com.masterwok.coinme.data.repositories.models.NewsFilter
 import com.masterwok.coinme.data.repositories.models.from
@@ -29,7 +30,10 @@ class NewsPagingSource constructor(
             )
 
             if (!response.isSuccessful) {
-                error("Fetch news request unsuccessful: ${response.code()}")
+                when (response.code()) {
+                    429 -> throw TooManyRequestsException()
+                    else -> error("Fetch news request unsuccessful: ${response.code()}")
+                }
             }
 
             val everythingResponseDto = checkNotNull(response.body())

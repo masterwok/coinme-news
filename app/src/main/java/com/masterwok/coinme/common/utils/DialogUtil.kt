@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import com.afollestad.materialdialogs.MaterialDialog
 import com.masterwok.coinme.R
+import com.masterwok.coinme.data.clients.exceptions.TooManyRequestsException
 import com.masterwok.coinme.data.clients.okhttp.interceptors.InternetConnectionInterceptor
 
 fun presentMessageDialog(
@@ -29,6 +30,14 @@ fun presentNotConnectedDialog(context: Context) {
     )
 }
 
+fun presentTooManyRequestsDialog(context: Context) {
+    presentMessageDialog(
+        context,
+        titleRes = R.string.too_many_requests_title,
+        messageRes = R.string.too_many_requests_message
+    )
+}
+
 fun presentNetworkFailureDialog(
     context: Context,
     throwable: Throwable,
@@ -38,6 +47,7 @@ fun presentNetworkFailureDialog(
     is InternetConnectionInterceptor.NoInternetConnectionException -> presentNotConnectedDialog(
         context
     )
+    is TooManyRequestsException -> presentTooManyRequestsDialog(context)
     else -> presentOopsDialog(
         context,
         R.string.oops_dialog_message_retry,

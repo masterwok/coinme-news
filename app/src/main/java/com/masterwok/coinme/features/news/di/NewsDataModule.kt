@@ -15,8 +15,9 @@ class NewsDataModule {
         newsApiClient: NewsApiClient
     ): NewsRepository = NewsRepositoryImpl(
         newsApiClient,
-        "828a6ecc708a4f969a8f60460c4a6e76"
+//        "828a6ecc708a4f969a8f60460c4a6e76"
 //        "b2348b23497a4c0f9c59693d5d8d2cef"
+        "e63b9559ab0c4720b83f448cd547192e"
     )
 
 }

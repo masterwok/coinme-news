@@ -14,4 +14,6 @@
     <string name="search">Search</string>
     <string name="news_no_results_title">No News Found</string>
     <string name="news_no_results_message">We\'re unable to find any news articles related to your search term at this time. Please try agin later!</string>
+    <string name="too_many_requests_title">Request allowance exceeded</string>
+    <string name="too_many_requests_message">The number of allowed requests for this API has been exceeded.</string>
 </resources>
