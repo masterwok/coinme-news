@@ -19,3 +19,8 @@ The architectural layers that exist in the application:
 - Clients
 
 ## Screenshots
+
+The below screenshots show the entirety of the application:
+
+<img src="screenshots/home.png?raw=true" height="600" title="Home">  <img src="screenshots/homeSearchActive.png?raw=true" height="600" title="Home Search Active">  <img src="screenshots/articleDetail.png?raw=true" height="600" title="Article Detail">  <img src="screenshots/articleDetailShare.png?raw=true" height="600" title="Article Detail Share">  <img src="screenshots/webView.png?raw=true" height="600" title="Web View">
+
