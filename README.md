@@ -1,6 +1,6 @@
 # Coinme Technical Interview Project
 
-This repository contains the Coinme technical interview project for Android. This application allows users to search for news articles, view article details, and open articles within a [WebView](https://developer.android.com/reference/android/webkit/WebView). news articles are provided using [https://newsapi.org/](https://newsapi.org/).
+This repository contains the Coinme technical interview project for Android. This application allows users to search for news articles, view article details, and open articles. Articles are opened within a [WebView](https://developer.android.com/reference/android/webkit/WebView). news articles are provided using [https://newsapi.org/](https://newsapi.org/).
 
 ## Architecture
 
